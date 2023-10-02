@@ -1,0 +1,472 @@
+
+ 
+Step 1 : Install the project
+
+composer create-project --prefer-dist laravel/laravel laravelvue
+
+Laravel version based install the command
+
+composer create-project --prefer-dist laravel/laravel Projectname "8.*"
+
+Step 2 : install the node modules
+
+npm install
+
+Step 3 : install the Vue librarys 
+
+npm install vue@next vue-loader@next
+
+Step 4 : Add the Vue modules ( C:\xampp\htdocs\laravelvue\webpack.mix.js )
+
+mix.js('resources/js/app.js', 'public/js').vue()
+    .postCss('resources/css/app.css', 'public/css', [
+        //
+    ]);
+
+Step 5 : Import the Vue  ( C:\xampp\htdocs\laravelvue\resources\js\app.js )
+require('./bootstrap');
+
+import { createApp } from 'vue';
+
+import App from './App.vue';
+
+createApp(App).mount("#app");
+
+Step 6 : Create the new Vue file ( C:\xampp\htdocs\laravelvue\resources\js\App.vue )
+
+<template>
+    <div>
+        Welcome to Laravel and Vue application
+    </div>
+</template>
+
+Step 7 : Create the new welcome.blade.php ( C:\xampp\htdocs\laravelvue\resources\views\welcome.blade.php )
+
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Laravel</title>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+ 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+    </head>
+    <body class="antialiased">
+         
+        <div id="app"></div>
+
+        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    </body>
+</html>
+ 
+Step 8 : Run the vue application in command line
+
+npm run watch
+
+Step 9 : Run the Laravel application in command line
+
+php artisan serve ( URL : http://127.0.0.1:8000 )
+
+Step 10 : create the components and employee Vue
+
+Folder name : components
+file Name : employee.Vue
+
+Step 11 : change the app Vue content file
+<template>
+	<div id="app">
+		<employee />
+	</div>
+</template>
+
+<script>
+	import employee from './components/employee.vue';
+
+	export default{
+		components:{
+			employee
+		}
+	}
+</script>
+
+step 12 : change the content to employee vue 
+
+<template>
+	<div class="container p-5">
+
+		<table class="table table-bordered table-hover">
+			<thead>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Action</th>
+			</thead>
+
+			<tbody>
+				<template v-for="employee in employees" :key="employee.id">
+					<tr>
+						<td>{{ employee.name }}</td>
+						<td>{{ employee.email }}</td>
+						<td>{{ employee.phone }}</td>
+						<td>
+							<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal" @click="editEmployee(employee)">Edit</button>
+							<button type="button" class="btn btn-sm btn-danger ml-2" @click="deleteEmployee(employee.id)">Delete</button>
+						</td>
+					</tr>					
+				</template>
+			</tbody>
+		</table>
+	</div>
+</template>
+<script>
+	import { ref, onMounted } from 'vue';
+	import axios from 'axios';
+	export default{
+		setup(){
+			const employees  = ref([]);
+		 
+			const getEmployee = async() =>{
+				let res = await axios.get('api/employees');
+				employees.value = res.data;
+			}
+
+			onMounted(getEmployee());
+            
+ 			return {
+				employees,
+			}
+
+		}
+	}
+</script>
+
+Step 13 : create the Employee controller and employee modal
+
+php artisan make:controller API/EmployeeController --api --model=Employee
+
+Step 14 : create the Employee migration command
+
+php artisan make:migration create_employees_table
+
+Step 15 : env file change the database
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravelvue
+DB_USERNAME=root
+DB_PASSWORD=
+
+Step 16 : Migrate commands used to create the table in database
+
+php artisan Migrate
+
+Step 17 : Employee controller code generation ( C:\xampp\htdocs\laravelvue\app\Http\Controllers\Api\EmployeeController.php )
+
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use Illuminate\Http\Request;
+
+class EmployeeController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return response()->json(Employee::get());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validated = $this->validateEmployee($request);
+
+        Employee::create($validated);
+
+        return response()->json('success');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Employee $employee)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Employee $employee)
+    {
+        return response()->json($employee);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Employee $employee)
+    {
+        $validated = $this->validateEmployee($request);
+
+        $employee->update($validated);
+
+        return response()->json('success');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Employee $employee)
+    {
+        $employee->delete();
+        return response()->json('success');
+    }
+
+    protected function validateEmployee($request){
+        return $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required'
+        ]);
+    }
+}
+
+Step 18 : Employee Model code generation ( C:\xampp\htdocs\laravelvue\app\Models\Employee.php )
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Employee extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['name','email','address','phone'];
+}
+
+STEP 19 : Employee resource controller add api ( C:\xampp\htdocs\laravelvue\routes\api.php )
+
+Route::resource('employees','Api\EmployeeController');
+
+STEP 20 : RouteServiceProvider uncommand the code  
+
+ protected $namespace = 'App\\Http\\Controllers';
+
+Step 21 : Employee vue code generation ( C:\xampp\htdocs\laravelvue\resources\js\components\employee.vue )
+
+<template>
+	<div class="container p-5">
+
+		<button type="button" class="btn btn-primary mb-4 float-right" data-toggle="modal" data-target="#myModal" @click="formReset">New Employee</button>
+
+		<div class="modal" id="myModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h5 class="modal-title text-muted">Add New Employee</h5>
+						<button type="button" class="close close_modal" data-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+
+						<div class="text-sm text-danger" if="errors != ''">
+							<p v-for="error in errors" class="mb-0" :key="error"><small>{{ error }} </small></p>
+						</div>
+
+
+
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-control" v-model="form.name">
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="email" class="form-control" v-model="form.email">
+						</div>
+						<div class="form-group">
+							<label>Phone</label>
+							<input type="text" class="form-control" v-model="form.phone">
+						</div>
+
+						<button v-if="employee_id == ''" type="button" class="btn btn-primary" @click="storeEmployee">Submit</button>
+
+						<button v-else type="button" class="btn btn-primary" @click="updateEmployee">Update</button>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		
+		<table class="table table-bordered table-hover">
+			<thead>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Action</th>
+			</thead>
+
+			<tbody>
+				<template v-for="employee in employees" :key="employee.id">
+					<tr>
+						<td>{{ employee.name }}</td>
+						<td>{{ employee.email }}</td>
+						<td>{{ employee.phone }}</td>
+						<td>
+							<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal" @click="editEmployee(employee)">Edit</button>
+							<button type="button" class="btn btn-sm btn-danger ml-2" @click="deleteEmployee(employee.id)">Delete</button>
+						</td>
+					</tr>					
+				</template>
+			</tbody>
+		</table>
+	</div>
+</template>
+<script>
+	import { ref,reactive, onMounted } from 'vue';
+	import axios from 'axios';
+	export default{
+		setup(){
+			const employees  = ref([]);
+			const errors  = ref([]);
+			const employee_id  = ref('');
+			const form = reactive({
+				name:'',
+				email:'',
+				phone:''
+			});
+
+			const getEmployee = async() =>{
+				let res = await axios.get('api/employees');
+				employees.value = res.data;
+			}
+
+			const deleteEmployee = async(id)=>{
+				await axios.delete('api/employees/'+ id)
+				getEmployee()
+			}
+
+			const storeEmployee = async() => {
+				try{
+					await axios.post('api/employees',form)
+					getEmployee()
+					formReset()
+					$("#myModal").modal('hide');
+				}catch(e){
+					if(e.response.status == 422){
+						var data = [];
+						for(const key in e.response.data.errors){
+							data.push(e.response.data.errors[key][0]);
+						}
+						errors.value = data;
+					}
+				}
+			}
+			
+			const updateEmployee = async() => {
+				try{
+					await axios.patch('api/employees/' + employee_id.value,form)
+					getEmployee()
+					formReset()
+					$("#myModal").modal('hide');
+				}catch(e){
+					if(e.response.status == 422){
+						var data = [];
+						for(const key in e.response.data.errors){
+							data.push(e.response.data.errors[key][0]);
+						}
+						errors.value = data;
+					}
+				}
+			}
+
+			const editEmployee = (employee)=>{
+				employee_id.value = employee.id;
+				form.name = employee.name;
+				form.email = employee.email;
+				form.phone = employee.phone;
+			}
+
+			onMounted(getEmployee());
+
+			const formReset = () =>{
+				employee_id.value = '';
+				form.name = '';
+				form.email = '';
+				form.phone = '';
+			}
+
+			return {
+				employees,
+				form,
+				storeEmployee,
+				errors,
+				editEmployee,
+				employee_id,
+				updateEmployee,
+				formReset,
+				deleteEmployee
+			}
+
+		}
+	}
+</script> 
+
+
+Step 22 : Run the vue application in command line
+
+npm run watch
+
+Step 23 : Run the Laravel application in command line
+
+php artisan serve ( URL : http://127.0.0.1:8000 )

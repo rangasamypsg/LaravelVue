@@ -1,0 +1,68 @@
+Leave for office 
+-------------------
+From,
+Rangasamy.M,
+Full stack developer,
+Company name.
+
+To,
+  The HR Manager,
+  Company name, address,
+  Date,
+
+Sub : Application for one day leave
+
+Dear Sir/Madam,
+This is to inform you that i am Rangasamy.M  working as a full stack developer in your office. Today I cannot come to the office due to sickness with headache. I need rest to heal my health completely.
+
+Therefore, I request you to please approve my leave for today,( 10-08-23 ). I will be very greatful to you.
+
+Yours Sincerely,
+Rangasamy.M
+
+
+Leave for office 
+-----------------
+From,
+Rangasamy.M,
+Full stack developer,
+Company name.
+
+To,
+  The HR Manager,
+  Company name, address,
+  Date,
+
+Sub : Application for festival function three day leave
+
+Dear Sir/Madam,
+This is to inform you that as i am going to celebrate an important festival in my hometown. So i am unable to come to office from ( 10-08-23 )  to ( 12-08-23).  
+ 
+Therefore, I request you to please grant me three days leaves for which i will be very thankful to you.
+
+Yours Sincerely,
+Rangasamy.M
+
+
+Leave for office 
+-----------------
+From,
+Rangasamy.M,
+Full stack developer,
+Company name.
+
+To,
+  The HR Manager,
+  Company name, address,
+  Date,
+
+Sub : Application for two day leave
+
+Dear Sir/Madam,
+I would like to inform you that. I am unable to come to office from  ( 10-08-23 ) to ( 11-08-23 ) due to some personal reasons.
+   
+Therefore, I request you to please grant me three days leaves for which i will be very thankful to you.
+
+Yours Sincerely,
+Rangasamy.M
+

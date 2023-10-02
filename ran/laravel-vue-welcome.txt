@@ -1,0 +1,78 @@
+
+ 
+Step 1 : Install the project
+
+composer create-project --prefer-dist laravel/laravel laravelvue
+
+Laravel version based install the command
+
+composer create-project --prefer-dist laravel/laravel Projectname "8.*"
+
+Step 2 : install the node modules
+
+npm install
+
+Step 3 : install the Vue librarys 
+
+npm install vue@next vue-loader@next
+
+Step 4 : Add the Vue modules ( C:\xampp\htdocs\laravelvue\webpack.mix.js )
+
+mix.js('resources/js/app.js', 'public/js').vue()
+    .postCss('resources/css/app.css', 'public/css', [
+        //
+    ]);
+
+Step 5 : Import the Vue  ( C:\xampp\htdocs\laravelvue\resources\js\app.js )
+require('./bootstrap');
+
+import { createApp } from 'vue';
+
+import App from './App.vue';
+
+createApp(App).mount("#app");
+
+Step 6 : Create the new Vue file ( C:\xampp\htdocs\laravelvue\resources\js\App.vue )
+
+<template>
+    <div>
+        Welcome to Laravel and Vue application
+    </div>
+</template>
+
+Step 7 : Create the new welcome.blade.php ( C:\xampp\htdocs\laravelvue\resources\views\welcome.blade.php )
+
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Laravel</title>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+ 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+    </head>
+    <body class="antialiased">
+         
+        <div id="app"></div>
+
+        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    </body>
+</html>
+ 
+Step 8 : Run the vue application in command line
+
+npm run watch
+
+Step 9 : Run the Laravel application in command line
+
+php artisan serve ( URL : http://127.0.0.1:8000 )
+
